@@ -1,6 +1,4 @@
-PhoneGap-Start
+Whereami? - A Phonegap experiment
 ---
 
-A starting point for PhoneGap apps.
-
-To get started: fork this repo, modify the config.xml to match your details, and get building!
+This is an experiment with the PhoneGap API and build.phonegap.com build process
