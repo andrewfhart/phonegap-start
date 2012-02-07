@@ -23,12 +23,13 @@
           + 'Timestamp' + new Date(position.timestamp) + '<br />';
         
         var ajax = new XMLHttpRequest();
-        ajax.open("GET","http://datafluency.com/geo/info/" + position.coords.latitude + '/' + position.coords.longitude,true);
+        ajax.open("GET","http://datafluency.com/geo/info/" + position.coords.latitude + '/' + position.coords.longitude + '/text',true);
         ajax.send();
         
         ajax.onreadystatechange=function() {
           if(ajax.readyState==4 && (ajax.status==200)){
-               document.getElementById('geolocation').innerHTML = ajax.responseText;
+               document.getElementById('geolocation').innerHTML  = 
+      document.getElementById('geolocation').innerHTML + '<br/>' + ajax.responseText;
           }
         }
       }
