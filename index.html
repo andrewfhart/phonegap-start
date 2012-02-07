@@ -21,6 +21,16 @@
         element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />'
           + 'Longitude' + position.coords.longitude + '<br />'
           + 'Timestamp' + new Date(position.timestamp) + '<br />';
+        
+        var ajax = new XMLHttpRequest();
+        ajax.open("GET","http://datafluency.com/geo/info/" + position.coords.latitude + '/' + position.coords.longitude,true);
+        ajax.send();
+        
+        ajax.onreadystatechange=function() {
+          if(ajax.readyState==4 && (ajax.status==200)){
+               document.getElementById('geolocation').innerHTML = ajax.responseText;
+          }
+        }
       }
       
       // On error
