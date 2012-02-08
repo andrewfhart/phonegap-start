@@ -71,7 +71,7 @@
             [my_position.coords.latitude,my_position.coords.longitude,'8mi'].join(','),
             function ( data ) {
               $.each(data.results, function(i,v) {
-                $('#tweets').append($(document.createElement('p')).html(v.text);              
+                $('#tweets').append($(document.createElement('p')).html(v.text));              
               });
             }
           );
