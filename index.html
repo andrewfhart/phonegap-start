@@ -3,45 +3,89 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
     <title>Whereami?</title>
-    <link rel="stylesheet" href="assets/css/master.css" type="text/css" media="screen" />
+    
+    <!-- Load CSS assets -->
+    <link rel="stylesheet" href="assets/css/jquery.mobile-1.0.1.min.css"/>
+    
+    
+    <!-- Load JavaScript assets -->
     <script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/js/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/js/jquery.mobile-1.0.1.min.js" type="text/javascript" charset="utf-8"></script>
+    
+    <!-- Application logic -->
     <script type="text/javascript">
+      
       // Wait for PhoneGap to load
-      document.addEventListener('deviceready', onDeviceReady, false );
+      window.addEventListener('load', function() {
+        document.addEventListener('deviceready', onDeviceReady, false);
+      }, false);
       
       // PhoneGap is ready
       function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition( onLocated, onError, 
-          { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true } );
+        alert("we're ready!");
       }
+      
+      // jQuery Mobile Event Handling
+      $( function() {
+      
+        $('#location_button').click(function() {
+          alert('location button clicked');
+          // Determine the current location
+          navigator.geolocation.getCurrentPosition( onLocated, onError, 
+            { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+        });
+        
+      });
       
       // On successful geolocation
       function onLocated( position ) {
-        var element = document.getElementById('geolocation');
-        element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />'
-          + 'Longitude' + position.coords.longitude + '<br />'
-          + 'Timestamp' + new Date(position.timestamp) + '<br />';
+      
+        // Get the element to update
+        var element = $('#location_text');
         
-        var ajax = new XMLHttpRequest();
-        ajax.open("GET","http://datafluency.com/geo/info/" + position.coords.latitude + '/' + position.coords.longitude + '/text',true);
-        ajax.send();
+        // Display the latitude, longitude, and timestamp
+        element.html(
+            'Latitude: '  + position.coords.latitude     + '<br />'
+          + 'Longitude: ' + position.coords.longitude    + '<br />'
+          + 'Timestamp: ' + new Date(position.timestamp) + '<br />' );
         
-        ajax.onreadystatechange=function() {
-          if(ajax.readyState==4 && (ajax.status==200)){
-               document.getElementById('geolocation').innerHTML  = 
-      document.getElementById('geolocation').innerHTML + '<br/>' + ajax.responseText;
-          }
-        }
+        // Get a detailed textual description of the location
+        $.get("http://datafluency.com/geo/info/" + position.coords.latitude + '/' + position.coords.longitude + '/text',
+          function( text ) {
+            element.append($(document.createElement('p')).html(text));        
+          });
+        });
+          
       }
       
       // On error
       function onError( error ) {
-        alert( 'code: ' + error.code + '\n' + 
-               'message: ' + error.message + '\n');
+        alert( 'code: '    + error.code    + '\n'
+              +'message: ' + error.message + '\n');
       }
     </script>
   </head>
   <body>
-    <p id="geolocation">Finding geolocation...</p>
+  
+    <!-- Home -->
+    <div data-role="page" id="home">
+      <div data-role="header">
+        <h1>Where Am I?</h1>
+      </div>
+      <div data-role="content">
+        <p>It's good to know where you are!</p>
+        <p><a href="#location" id="location_button" data-role="button">Find My Location</a></p>
+      </div>
+    </div>
+    
+    <!-- Location -->
+    <div data-role="page" id="location">
+      <div data-role="content">
+        <p id="location_text">Determining your location...</p>
+        
+        <p><a href="#home" data-role="button">Home</a></p>                
+      </div>
+    </div>
   </body>
 </html>
