@@ -54,9 +54,8 @@
         $.get("http://datafluency.com/geo/info/" + position.coords.latitude + '/' + position.coords.longitude + '/text',
           function( text ) {
             element.append($(document.createElement('p')).html(text));        
-          });
-        );
-          
+          }
+        );          
       }
       
       // On error
