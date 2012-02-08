@@ -33,7 +33,7 @@
           alert('location button clicked');
           // Determine the current location
           navigator.geolocation.getCurrentPosition( onLocated, onError, 
-            { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+            { maximumAge: 3000, timeout: 15000, enableHighAccuracy: true });
         });
         
       });
